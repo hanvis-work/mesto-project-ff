@@ -19,6 +19,8 @@ const imageModal = document.querySelector('.popup_type_image');
 const imageItem = document.querySelector('.popup__image');
 const imageDesc = document.querySelector('.popup__caption');
 
+const allModals = document.querySelectorAll('.popup');
+
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const editForm = document.querySelector('.popup__form[name=edit-profile]');
@@ -52,14 +54,14 @@ const openImage = ({name, link}) => {
 };
 
 // Редактирование профиля
-const handleFormSubmit = (e) => {
+const handleProfileFormSubmit = (e) => {
   e.preventDefault();
   profileTitle.textContent = editNameInput.value;
   profileDescription.textContent = editJobInput.value;
 
   closeModal(editProfileModal);
 };
-editForm.addEventListener('submit', handleFormSubmit);
+editForm.addEventListener('submit', handleProfileFormSubmit);
 
 // функция создания новой карточки
 const handleCardSubmit = (e) => {
@@ -78,6 +80,18 @@ const handleCardSubmit = (e) => {
   closeModal(cardModal);
 };
 placeForm.addEventListener('submit', handleCardSubmit);
+
+// Ззакрытие модалок по крестику или оверлею
+allModals.forEach((close) => {
+  close.addEventListener('click', (e) => {
+    const overlay = e.target === e.currentTarget;
+    const closeBtn = e.target.classList.contains('popup__close');
+
+    if (closeBtn || overlay) {
+      closeModal(close);
+    }
+  })
+});
 
 // Вывести карточки на страницу
 initialCards.forEach((item) => {
