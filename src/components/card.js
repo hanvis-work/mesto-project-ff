@@ -3,7 +3,7 @@ import { deleteCard } from './api.js'
 const cardTemplate = document.querySelector('#card-template').content;
 
 // Функция создания карточки
-export function createCard(cardData, userId, removeCard, openImage, handleLike) {
+export function createCard(cardData, userId, removeCard, handleOpenImage, handleLike) {
   const { name: cardName, link: cardLink, likes, owner } = cardData;
 
   const cardElement = cardTemplate.cloneNode(true).querySelector('.card');
@@ -25,7 +25,7 @@ export function createCard(cardData, userId, removeCard, openImage, handleLike) 
     deleteButton.remove();
   }
   
-  cardImage.addEventListener('click', () => openImage(cardData));
+  cardImage.addEventListener('click', () => handleOpenImage(cardData));
 
   const likeCounter = cardElement.querySelector('.card__like-counter');
 
@@ -42,7 +42,7 @@ export function createCard(cardData, userId, removeCard, openImage, handleLike) 
     cardLikeBtn.classList.toggle('card__like-button_is-active');
   }
 
-  cardLikeBtn.addEventListener('click', () => handleLike(cardData._id, isLiked));
+  cardLikeBtn.addEventListener('click', () => handleLike(cardData._id, cardLikeBtn, likeCounter));
 
   return cardElement;
 }
@@ -51,5 +51,8 @@ export function createCard(cardData, userId, removeCard, openImage, handleLike) 
 export const removeCard = (cardDataId, templateCard) => {
   deleteCard(cardDataId).then(() => {
     templateCard.remove();
+  })
+  .catch((err) => {
+    console.log(err);
   });
 }
